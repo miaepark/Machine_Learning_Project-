@@ -27,7 +27,7 @@ summary(training)
 summary(testing)
 str(training)
 str(testing)
-# Delete columns with all missing values 
+# Delete columns with all missing values  
 training <- training[,colSums(is.na(training)) == 0]
 testing <- testing[,colSums(is.na(testing)) == 0]
 # Delete irrelevant variables to our current project
