@@ -25,7 +25,6 @@ which is the quantity: 1-accuracy found from the cross validation dataset.
 
 Our outcome variable is a factor variable. We split the training dataset into TrainTrainingSet and TestTrainingSet dataset.
 
-
 ```{r}
 # Basic Explanatory Analysis
 set.seed(1234)
@@ -35,27 +34,34 @@ summary(training)
 summary(testing)
 str(training)
 str(testing)
+
 # Delete columns with all missing values  
 training <- training[,colSums(is.na(training)) == 0]
 testing <- testing[,colSums(is.na(testing)) == 0]
+
 # Delete irrelevant variables to our current project
 training <- training[,-c(2:7)]
 testing <- testing[,-c(2:7)]
+
 # Partition the data so that 75% of the training dataset into training and the remaining 25% to testing 
 library(caret)
 traintrainset <- createDataPartition(y=training$classe, p=0.75, list=FALSE)
 TrainTrainingSet <- training[traintrainset,]
 TestTrainingSet <- training[-traintrainset,]
+
 # Plot of the outcome variable to see the frequency of each level in the TrainTrainingSet. 
 plot(TrainTrainingSet$classe, main="Plot of levels of variable classe within the TrainTrainingSet", xlab="classe", ylab="Frequency")
 ```
+
 # Prediction model 1: Decision Tree 
 ```{r}
 library(rpart)
 model1 <- rpart(classe ~ ., data=TrainTrainingSet, method="class")
 prediction1 <- predict(model1, TestTrainingSet, type="class")
+
 # Plot the decision tree
 rpart.plot(model1, main="Classification Tree", extra=102, under=TRUE, faclen=0)
+
 # Test results on our TestTrainingSet 
 library(caret)
 confusionMatrix(prediction1, TestTrainingSet$classe)
